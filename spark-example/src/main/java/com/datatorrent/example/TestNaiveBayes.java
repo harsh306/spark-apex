@@ -15,6 +15,7 @@ import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.mllib.util.MLUtils;
 
 import scala.Tuple2;
+import scala.reflect.ClassTag;
 
 public class TestNaiveBayes implements Serializable
 {
@@ -23,13 +24,14 @@ public class TestNaiveBayes implements Serializable
   {
     // TODO Auto-generated constructor stub
   }
-  public TestNaiveBayes(SparkContext sc)
+  public TestNaiveBayes(ApexContext sc)
   {
     String path = "src/main/resources/data/sample_libsvm_data.txt";
-    JavaRDD<LabeledPoint> inputData = MLUtils.loadLibSVMFile(sc, path).toJavaRDD();
+    ClassTag<LabeledPoint> tag = scala.reflect.ClassTag$.MODULE$.apply(LabeledPoint.class);
+    ApexRDD<LabeledPoint> inputData = new ApexRDD<LabeledPoint> (MLUtils.loadLibSVMFile(sc, path), tag);
     JavaRDD<LabeledPoint>[] tmp = inputData.randomSplit(new double[]{0.6, 0.4});
-    JavaRDD<LabeledPoint> training = tmp[0]; // training set
-    JavaRDD<LabeledPoint> test = tmp[1]; // test set
+    ApexRDD<LabeledPoint> training = new ApexRDD<LabeledPoint>(tmp[0].rdd(), tag); // training set
+    ApexRDD<LabeledPoint> test = new ApexRDD<LabeledPoint>(tmp[1].rdd(), tag); // test set
     final NaiveBayesModel model = NaiveBayes.train(training.rdd(), 1.0);
     JavaPairRDD<Double, Double> predictionAndLabel =
         test.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
@@ -53,7 +55,8 @@ public class TestNaiveBayes implements Serializable
 
   public static void main(String[] args)
   {
-    SparkContext sc  = new SparkContext(new SparkConf().setMaster("local[2]").setAppName("TestNaiveBayes"));
-    TestNaiveBayes t = new TestNaiveBayes(sc);
+//    SparkContext sc  = new SparkContext(new SparkConf().setMaster("local[2]").setAppName("TestNaiveBayes"));
+    ApexContext ac  = new ApexContext();
+    TestNaiveBayes t = new TestNaiveBayes(ac);
   }
 }
