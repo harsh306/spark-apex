@@ -21,5 +21,10 @@
       <artifactId>apex-engine</artifactId>
       <version>3.4.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.apex</groupId>
+      <artifactId>malhar-library</artifactId>
+      <version>3.5.0</version>
+    </dependency>
   </dependencies>
 </project>
