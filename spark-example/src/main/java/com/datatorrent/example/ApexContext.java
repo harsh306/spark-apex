@@ -19,7 +19,7 @@ public class ApexContext extends SparkContext
   @Override
   public RDD<String> textFile(String path, int minPartitions)
   {
-    ApexRDD rdd = new ApexRDD<>(this);
+    ApexRDD rdd = new ApexRDD(this);
     LineByLineFileInputOperator fileInput = rdd.getDag().addOperator("Input", LineByLineFileInputOperator.class);
     fileInput.setDirectory(path);
     fileInput.setPartitionCount(minPartitions);
