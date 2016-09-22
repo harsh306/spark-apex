@@ -1,5 +1,8 @@
 package com.datatorrent.example;
 
+import com.datatorrent.api.DefaultInputPort;
+import com.datatorrent.api.DefaultOutputPort;
+import com.datatorrent.common.util.BaseOperator;
 import org.apache.spark.Partition;
 import org.apache.spark.SparkContext;
 import org.apache.spark.TaskContext;
@@ -40,9 +43,10 @@ public class ApexRDD<T> extends RDD<T>
   @Override
   public <U> RDD<U> map(Function1<T, U> f, ClassTag<U> evidence$3)
   {
-    return null;
+    MapOperator m1 = dag.addOperator("Map", MapOperator.class);
+    m1.f = f;
+    return (ApexRDD<U>)this;
   }
-
   @Override
   public Iterator<T> compute(Partition arg0, TaskContext arg1)
   {
@@ -61,5 +65,16 @@ public class ApexRDD<T> extends RDD<T>
     INPUT,
     PROCESS,
     OUTPUT
+  }
+  public static class MapOperator extends BaseOperator
+  {
+    public Function1 f;
+    public final transient DefaultInputPort input = new DefaultInputPort() {
+      @Override
+      public void process(Object tuple) {
+        output.emit(f.apply(tuple));
+      }
+    };
+    public final transient DefaultOutputPort output = new DefaultOutputPort();
   }
 }
