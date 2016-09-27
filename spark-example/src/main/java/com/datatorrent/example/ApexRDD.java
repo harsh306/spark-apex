@@ -1,18 +1,23 @@
 package com.datatorrent.example;
 
-import com.datatorrent.api.DAG;
 import com.datatorrent.api.DefaultInputPort;
 import com.datatorrent.api.DefaultOutputPort;
-import com.datatorrent.api.Operator;
 import com.datatorrent.common.util.BaseOperator;
-import com.datatorrent.stram.plan.logical.LogicalPlan;
 import org.apache.spark.Partition;
+import org.apache.spark.SparkContext;
 import org.apache.spark.TaskContext;
+import org.apache.spark.rdd.MapPartitionsRDD;
 import org.apache.spark.rdd.RDD;
+
+import com.datatorrent.api.DAG;
+import com.datatorrent.api.Operator;
+import com.datatorrent.stram.plan.logical.LogicalPlan;
+
 import scala.Function1;
 import scala.Function2;
 import scala.collection.Iterator;
 import scala.reflect.ClassTag;
+import scala.tools.nsc.doc.model.Def;
 
 public class ApexRDD<T> extends RDD<T>
 {
@@ -56,7 +61,7 @@ public class ApexRDD<T> extends RDD<T>
     public T reduce(Function2<T, T, T> f) {
         ReduceOperator reduceOperator = dag.addOperator("Reduce "+System.currentTimeMillis(),ReduceOperator.class);
         reduceOperator.f2=f;
-        return (T) this;
+        return (T) new Integer(1);
     }
 
     @Override
