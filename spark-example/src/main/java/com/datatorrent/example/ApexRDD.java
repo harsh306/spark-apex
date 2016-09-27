@@ -29,7 +29,6 @@ public class ApexRDD<T> extends RDD<T>
 
   public ApexRDD(ApexContext ac)
   {
-      Integer
     super(ac.emptyRDD((ClassTag<T>) scala.reflect.ClassManifestFactory.fromClass(Object.class)), (ClassTag<T>) scala.reflect.ClassManifestFactory.fromClass(Object.class));
     dag = new LogicalPlan();
   }
