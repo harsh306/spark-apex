@@ -34,7 +34,7 @@ public class TestNaiveBayes implements Serializable
 //    JavaRDD<LabeledPoint>[] tmp = inputData.randomSplit(new double[]{0.6, 0.4});
 //    ApexRDD<LabeledPoint> training = new ApexRDD<LabeledPoint>(tmp[0].rdd(), tag); // training set
 //    ApexRDD<LabeledPoint> test = new ApexRDD<LabeledPoint>(tmp[1].rdd(), tag); // test set
-//    final NaiveBayesModel model = NaiveBayes.train(training.rdd(), 1.0);
+//    final NaiveBayesModel model = NaiveBayes.train(training.rdd(), 1.0);https://github.com/harsh306/spark-apex.git
 //    JavaPairRDD<Double, Double> predictionAndLabel =
 //        test.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
 //          @Override

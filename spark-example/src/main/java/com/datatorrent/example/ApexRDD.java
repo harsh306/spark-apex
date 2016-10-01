@@ -12,6 +12,7 @@ import com.datatorrent.api.DAG;
 import com.datatorrent.api.Operator;
 import com.datatorrent.stram.plan.logical.LogicalPlan;
 
+import scala.Boolean;
 import scala.Function1;
 import scala.collection.Iterator;
 import scala.reflect.ClassTag;
@@ -47,6 +48,16 @@ public class ApexRDD<T> extends RDD<T>
     m1.f = f;
     return (ApexRDD<U>)this;
   }
+
+  @Override
+  public RDD<T> filter(Function1<T, Object> f) {
+
+    // Here I will have to write a filter operator as another entity on dag right?
+    // but as the primary purpose of MapOperator above was apply() on every tuple...what for filter?
+
+    return super.filter(f);
+  }
+
   @Override
   public Iterator<T> compute(Partition arg0, TaskContext arg1)
   {
