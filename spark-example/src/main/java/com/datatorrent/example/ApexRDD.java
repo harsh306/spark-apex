@@ -12,7 +12,7 @@ import com.datatorrent.api.DAG;
 import com.datatorrent.api.Operator;
 import com.datatorrent.stram.plan.logical.LogicalPlan;
 
-import scala.Boolean;
+
 import scala.Function1;
 import scala.collection.Iterator;
 import scala.reflect.ClassTag;
@@ -54,8 +54,9 @@ public class ApexRDD<T> extends RDD<T>
 
     // Here I will have to write a filter operator as another entity on dag right?
     // but as the primary purpose of MapOperator above was apply() on every tuple...what for filter?
-
-    return super.filter(f);
+    FilterOperator f1 = dag.addOperator("Filter",FilterOperator.class);
+    f1.f=f;
+    return this;
   }
 
   @Override
@@ -76,6 +77,18 @@ public class ApexRDD<T> extends RDD<T>
     INPUT,
     PROCESS,
     OUTPUT
+  }
+  public static class FilterOperator extends BaseOperator{
+    public Function1 f;
+    public final transient DefaultInputPort input = new DefaultInputPort() {
+      @Override
+      public void process(Object tuple) {
+        if((Boolean)f.apply(tuple)){
+          output.emit(tuple);
+        }
+      }
+    };
+    public static transient  DefaultOutputPort output= new DefaultOutputPort();
   }
   public static class MapOperator extends BaseOperator
   {
