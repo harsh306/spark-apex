@@ -16,6 +16,8 @@ import com.datatorrent.stram.plan.logical.LogicalPlan;
 import scala.Function1;
 import scala.collection.Iterator;
 import scala.reflect.ClassTag;
+import utils.OperatorClasses.FilterOperator;
+import utils.OperatorClasses.MapOperator;
 
 public class ApexRDD<T> extends RDD<T>
 {
@@ -78,27 +80,5 @@ public class ApexRDD<T> extends RDD<T>
     PROCESS,
     OUTPUT
   }
-  public static class FilterOperator extends BaseOperator{
-    public Function1 f;
-    public final transient DefaultInputPort input = new DefaultInputPort() {
-      @Override
-      public void process(Object tuple) {
-        if((Boolean)f.apply(tuple)){
-          output.emit(tuple);
-        }
-      }
-    };
-    public static transient  DefaultOutputPort output= new DefaultOutputPort();
-  }
-  public static class MapOperator extends BaseOperator
-  {
-    public Function1 f;
-    public final transient DefaultInputPort input = new DefaultInputPort() {
-      @Override
-      public void process(Object tuple) {
-        output.emit(f.apply(tuple));
-      }
-    };
-    public final transient DefaultOutputPort output = new DefaultOutputPort();
-  }
+
 }
