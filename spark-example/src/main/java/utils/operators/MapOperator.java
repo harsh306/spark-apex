@@ -19,3 +19,4 @@ public class MapOperator extends BaseOperator
     };
     public final transient DefaultOutputPort output = new DefaultOutputPort();
 }
+
