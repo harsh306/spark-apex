@@ -1,10 +1,6 @@
 package com.datatorrent.example;
 
-import com.datatorrent.api.DefaultInputPort;
-import com.datatorrent.api.DefaultOutputPort;
-import com.datatorrent.common.util.BaseOperator;
 import org.apache.spark.Partition;
-import org.apache.spark.SparkContext;
 import org.apache.spark.TaskContext;
 import org.apache.spark.rdd.RDD;
 
@@ -16,8 +12,8 @@ import com.datatorrent.stram.plan.logical.LogicalPlan;
 import scala.Function1;
 import scala.collection.Iterator;
 import scala.reflect.ClassTag;
-import utils.OperatorClasses.FilterOperator;
-import utils.OperatorClasses.MapOperator;
+import utils.operators.FilterOperator;
+import utils.operators.MapOperator;
 
 public class ApexRDD<T> extends RDD<T>
 {
